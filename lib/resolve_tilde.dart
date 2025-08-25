@@ -11,10 +11,10 @@ const String tilde = "~";
 /// This exception is called when the resolver cannot find a home directory through the several methods used. This exception doesn't have a specific message, but instead uses the list [reasons] to gather every single reason that went wrong, then turn that into the [message] variable.
 class HomeDirectoryNotFoundException implements Exception {
   /// Every single reason this exception went wrong. These can be descriptions, other exceptions/errors, etcetera.
-  final List<Object> reasons;
+  final List<Object?> reasons;
 
   /// Combines [reasons] to make a message. If [reasons] is not provided, nothing is returned.
-  String? get message => reasons.isNotEmpty ? reasons.map((x) => x.toString()).join(", ") : null;
+  String? get message => reasons.isNotEmpty ? reasons.where((x) => x != null).map((x) => x.toString()).join(", ") : null;
 
   /// The constructor for [HomeDirectoryNotFoundException].
   /// 
@@ -44,7 +44,8 @@ class Tilde {
   /// 
   /// Windows, macOS, and Linux are valid platforms. macOS and Linux use the same tactics. If a supported platform is not found, an [UnsupportedError] is thrown. If this is called on the web, then an error will be called even before [UnsupportedError] due to [Platform] being unsupported on the web.
   static String resolve([String path = tilde]) {
-    if (!path.startsWith(tilde)) return path;
+    path = path.trim();
+    if (!(path == tilde || path.startsWith("$tilde${Platform.isWindows ? "\\" : "/"}"))) return path;
     String replaceWith;
 
     if (Platform.isLinux || Platform.isMacOS) {
@@ -92,5 +93,23 @@ class Tilde {
     }
 
     return path.replaceFirst(tilde, replaceWith);
+  }
+
+  /// Resolve a tilde in the specified [path] argument. [path] defaults to just a tilde. If the included path does not start with a tilde, then the path is just returned as-is.
+  /// This function is the same as [resolve], but instead of throwing a [HomeDirectoryNotFoundException] when it cannot find a home directory, it returns null.
+  /// 
+  /// The function uses several different methods of trying to obtain the home directory. Both platforms start with just trying to get an environmental variable, but will use [Process.run] if necessary. If they all fail, a [HomeDirectoryNotFoundException] is thrown but the function will catch it and return null instead.
+  /// 
+  /// Windows, macOS, and Linux are valid platforms. macOS and Linux use the same tactics. If a supported platform is not found, an [UnsupportedError] is thrown. If this is called on the web, then an error will be called even before [UnsupportedError] due to [Platform] being unsupported on the web.
+  static String? resolveOrNull([String path = tilde]) {
+    try {
+      return resolve(path);
+    } catch (e) {
+      if (e is HomeDirectoryNotFoundException) {
+        return null;
+      } else {
+        rethrow;
+      }
+    }
   }
 }

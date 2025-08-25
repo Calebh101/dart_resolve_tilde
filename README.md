@@ -28,9 +28,10 @@ Resolve Tilde is a quick and easy package to, well, resolve tildes. Tildes are t
 
 `Tilde`: This is the main class for containing resources for resolving tildes.
 - Static constant `Tilde.tilde`: Discussed above.
-- Static `String` function `Tilde.resolve()`: This function is what actually resolves the tildes.
+- Static `String` function `Tilde.resolve`: This function is what actually resolves the tildes.
     - You can pass an optional positional `path` parameter to specify the path to actually expand. The default is just a tilde.
     - Note that this function does not fully expand the path; it only expands the first tilde in the included path if that tilde is at the beginning of the path.
+- Static `String` function `Tilde.resolveOrNull`: This function is the same as `Tilde.resolve`, but if a `HomeDirectoryNotFoundException` is thrown, then this function will catch it and return null. This would be generally better for safety, if you're fine with null checks.
 
 ## Usage
 
@@ -49,10 +50,16 @@ print(Tilde.tilde); // Output: '~'
 import 'package:resolve_tilde/resolve_tilde.dart';
 
 if (Platform.isWindows) {
-    print(Tilde.resolve());                         // Output: 'C:\Users\user'
-    print(Tilde.resolve("~\\AppData\\Local"));      // Output: 'C:\Users\user\AppData\Local'
-} else if (Platform.isMacOS || Platform.isLinux) {
-    print(Tilde.resolve());                         // Output: '/home/user' or similar
-    print(Tilde.resolve("~/Pictures/Screenshots")); // Output: '/home/user/Pictures/Screenshots' or similar
+    print(Tilde.resolve());                              // Output: 'C:\Users\user' or similar
+    print(Tilde.resolveOrNull());                        // Output: 'C:\Users\user', similar, or null
+    print(Tilde.resolve("~\\AppData\\Local"));           // Output: 'C:\Users\user\AppData\Local'
+} else if (Platform.isMacOS) {
+    print(Tilde.resolve());                              // Output: '/Users/user' or similar
+    print(Tilde.resolveOrNull());                        // Output: '/home/user', similar, or null
+    print(Tilde.resolve("~/Documents"))                  // Output: '/Users/user' or similar
+} else if (Platform.isLinux) {
+    print(Tilde.resolve());                              // Output: '/home/user' or similar
+    print(Tilde.resolveOrNull());                        // Output: '/home/user', similar, or null
+    print(Tilde.resolve("~/Pictures/Screenshots"));      // Output: '/home/user/Pictures/Screenshots' or similar
 }
 ```

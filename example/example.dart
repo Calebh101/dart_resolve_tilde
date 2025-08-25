@@ -9,7 +9,10 @@ void main() {
   if (Platform.isWindows) {
     print("User directory: ${Tilde.resolve()}");
     print("Local AppData directory: ${Tilde.resolve("~\\AppData\\Local")}");
-  } else if (Platform.isMacOS || Platform.isLinux) {
+  } else if (Platform.isMacOS) {
+    print("User directory: ${Tilde.resolve()}");
+    print("Documents directory: ${Tilde.resolve("~/Documents")}");
+  } else if (Platform.isLinux) {
     print("User directory: ${Tilde.resolve()}");
     print("Screenshots directory: ${Tilde.resolve("~/Pictures/Screenshots")}");
   } else {

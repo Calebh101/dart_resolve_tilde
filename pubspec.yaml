@@ -1,6 +1,6 @@
 name: resolve_tilde
 description: A small and simple Dart package to quickly resolve tildes in multiple platforms.
-version: 0.0.0
+version: 0.0.1
 repository: https://github.com/Calebh101/dart_resolve_tilde
 
 environment:
