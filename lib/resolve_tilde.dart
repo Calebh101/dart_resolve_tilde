@@ -51,7 +51,7 @@ class Tilde {
       String? foundEnv = Platform.environment["HOME"];
 
       if (foundEnv?.isNotEmpty ?? false) {
-        return foundEnv!;
+        replaceWith = foundEnv!;
       } else {
         try {
           ProcessResult result = Process.runSync('sh', ['-c', 'echo $tilde']);
@@ -71,19 +71,19 @@ class Tilde {
       String? foundEnv = Platform.environment["USERPROFILE"];
 
       if (foundEnv?.isNotEmpty ?? false) {
-        return foundEnv!;
+        replaceWith = foundEnv!;
       } else {
-        String? drive = Platform.environment['HOMEDRIVE'];
-        String? path = Platform.environment['HOMEPATH'];
+        String? homedrive = Platform.environment['HOMEDRIVE'];
+        String? homepath = Platform.environment['HOMEPATH'];
 
-        if ([drive, path].every((x) => x != null)) {
-          return "$drive$path";
+        if ([homedrive, homepath].every((x) => x != null)) {
+          replaceWith = "$homedrive$homepath";
         } else {
           try {
             ProcessResult result = Process.runSync('powershell', ['-Command', '[Environment]::GetFolderPath("UserProfile")']);
             replaceWith = result.stdout.toString().trim();
           } catch (e) {
-            throw HomeDirectoryNotFoundException(["Environmental variable 'USERPROFILE' was null or empty", if (drive == null) "Environmental variable 'HOMEDRIVE' was null or empty", if (path == null) "Environmental variable 'HOMEPATH' was null or empty", e]);
+            throw HomeDirectoryNotFoundException(["Environmental variable 'USERPROFILE' was null or empty", if (homedrive == null) "Environmental variable 'HOMEDRIVE' was null or empty", if (homepath == null) "Environmental variable 'HOMEPATH' was null or empty", e]);
           }
         }
       }

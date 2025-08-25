@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:resolve_tilde/resolve_tilde.dart';
 
 void main() {
-  print("Tilde: $tilde");
-  print("Tilde: ${Tilde.tilde}");
+  print("Top-level tilde: $tilde");
+  print("Static nested tilde: ${Tilde.tilde}");
 
   if (Platform.isWindows) {
     print("User directory: ${Tilde.resolve()}");
