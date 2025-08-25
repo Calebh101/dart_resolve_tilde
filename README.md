@@ -15,7 +15,6 @@ Resolve Tilde is a quick and easy package to, well, resolve tildes. Tildes are t
 | Linux | ✅ | Supported as of version 0.0.0
 | Android | 🟥 | Unsupported due to restricted filesystem
 | iOS | 🟥 | Unsupported due to restricted filesystem
-| Fuchsia | 🟥 | Unsupported due to unknown filesystem
 | Web | 🟥 | Unsupported due to no filesystem
 
 ## Layout
