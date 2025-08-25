@@ -1,0 +1,18 @@
+import 'dart:io';
+
+import 'package:resolve_tilde/resolve_tilde.dart';
+
+void main() {
+  print("Tilde: $tilde");
+  print("Tilde: ${Tilde.tilde}");
+
+  if (Platform.isWindows) {
+    print("User directory: ${Tilde.resolve()}");
+    print("Local AppData directory: ${Tilde.resolve("~\\AppData\\Local")}");
+  } else if (Platform.isMacOS || Platform.isLinux) {
+    print("User directory: ${Tilde.resolve()}");
+    print("Screenshots directory: ${Tilde.resolve("~/Pictures/Screenshots")}");
+  } else {
+    throw UnsupportedError("Invalid platform: ${Platform.operatingSystem}");
+  }
+}
