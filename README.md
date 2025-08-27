@@ -52,7 +52,7 @@ import 'package:resolve_tilde/resolve_tilde.dart';
 if (Platform.isWindows) {
     print(Tilde.resolve());                              // Output: 'C:\Users\user' or similar
     print(Tilde.resolveOrNull());                        // Output: 'C:\Users\user', similar, or null
-    print(Tilde.resolve("~\\AppData\\Local"));           // Output: 'C:\Users\user\AppData\Local'
+    print(Tilde.resolve("~\\AppData\\Local"));           // Output: 'C:\Users\user\AppData\Local' or similar
 } else if (Platform.isMacOS) {
     print(Tilde.resolve());                              // Output: '/Users/user' or similar
     print(Tilde.resolveOrNull());                        // Output: '/home/user', similar, or null
