@@ -1,5 +1,7 @@
 # Resolve Tilde
 
+https://pub.dev/packages/resolve_tilde
+
 Resolve Tilde is a quick and easy package to, well, resolve tildes. Tildes are the wavy symbols (`~`) that Dart can't naturally expand.
 
 ## Notes
@@ -44,7 +46,7 @@ print(tilde);       // Output: '~'
 print(Tilde.tilde); // Output: '~'
 ```
 
-## Resolving
+### Resolving
 
 ```dart
 import 'package:resolve_tilde/resolve_tilde.dart';
